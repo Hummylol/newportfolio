@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+
+
+:root {
+  /* Light Theme - Apple Style */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #f5f5f7;
+  --card-foreground: #000000;
+  --border: #e5e5ea;
+  --border-muted: #f5f5f7;
+  --grid-line: rgba(0, 0, 0, 0.045);
+  --outline-stroke: rgba(0, 0, 0, 0.25);
+  --outline-fill: #000000;
+  --navbar-bg: rgba(255, 255, 255, 0.7);
+  --navbar-border: rgba(0, 0, 0, 0.06);
+  --shadow-color: rgba(0, 0, 0, 0.02);
+}
+
+.dark {
+  /* Dark Theme - Apple Style */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #1c1c1e;
+  --card-foreground: #ffffff;
+  --border: #2c2c2e;
+  --border-muted: #1c1c1e;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --outline-stroke: rgba(255, 255, 255, 0.25);
+  --outline-fill: #ffffff;
+  --navbar-bg: rgba(0, 0, 0, 0.7);
+  --navbar-border: rgba(255, 255, 255, 0.06);
+  --shadow-color: rgba(0, 0, 0, 0.6);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-border-muted: var(--border-muted);
+  --font-display: var(--font-sf-display), -apple-system, BlinkMacSystemFont, "SF Pro", "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: var(--font-sf-text), -apple-system, BlinkMacSystemFont, "SF Pro", "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-qin: var(--font-qin);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-y: scroll !important;
+}
+
+/* Outlined Typography Helper */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--outline-stroke);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-outline:hover {
+  color: var(--outline-fill);
+  -webkit-text-stroke: 1px var(--outline-fill);
+}
+
+/* Math Paper Grid Background - ONLY on Hero Home Screen */
+.hero-grid {
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Custom Minimal High-Contrast Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+  transition: background-color 0.5s ease;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 0px;
+  transition: background-color 0.5s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Force Swapy items to keep rounded corners during dragging and swapping */
+[data-swapy-item] {
+  border-radius: 24px !important;
+}

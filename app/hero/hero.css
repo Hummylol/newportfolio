@@ -1,0 +1,8 @@
+/* Only keyframes that can't be expressed as Tailwind utilities */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-ring { animation: none !important; }
+}
