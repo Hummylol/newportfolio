@@ -118,6 +118,14 @@ export default function Navbar() {
       return;
     }
     playSound.menuOpen();
+    if (menuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+    return () => {
+      document.body.classList.remove("menu-open");
+    };
   }, [menuOpen]);
 
   const menuItems = [

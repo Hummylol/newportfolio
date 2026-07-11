@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import Navbar from "@/components/Navbar";
+import CursorBlob from "@/components/CursorBlob";
 
 const sfProDisplay = localFont({
   src: [
@@ -74,6 +75,7 @@ export default function RootLayout({
       <body className="flex flex-col selection:bg-foreground selection:text-background">
         <LenisProvider>
           <Navbar />
+          <CursorBlob />
           {children}
         </LenisProvider>
       </body>

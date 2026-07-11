@@ -131,7 +131,7 @@ export default function Hero() {
         </div>
 
         <div className="w-screen">
-          <div className="w-fit">
+          <div className="w-fit" data-hero-name>
             <LineTextGL
               ref={line1Ref}
               text="HUMAID"
@@ -144,7 +144,7 @@ export default function Hero() {
               }}
             />
           </div>
-          <div className=" w-fit -mt-10">
+          <div className=" w-fit -mt-10" data-hero-name>
             <LineTextGL
               ref={line2Ref}
               text="SADATH"
@@ -171,7 +171,12 @@ export default function Hero() {
       >
         <a
           ref={ctaRef}
-          href="#work"
+          href="#projects-section"
+          data-cursor-minimize
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("projects-section")?.scrollIntoView({ behavior: "smooth" });
+          }}
           className="group inline-flex items-center gap-[10px] uppercase tracking-[0.06em] no-underline text-foreground border border-border rounded-full px-[22px] py-[14px] will-change-transform transition-colors duration-300 hover:bg-foreground hover:text-background hover:border-foreground"
           style={{ fontFamily: 'var(--font-sf-text), system-ui, sans-serif', fontSize: 'clamp(12px, 1vw, 14px)' }}
         >

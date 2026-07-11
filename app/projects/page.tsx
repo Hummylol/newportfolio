@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, X, ExternalLink } from "lucide-react";
+import { Link, X, ExternalLink, Play } from "lucide-react";
 import { playSound } from "@/utils/audio";
 
 const Github = ({ className }: { className?: string }) => (
@@ -24,99 +24,14 @@ const Github = ({ className }: { className?: string }) => (
 );
 
 const projects = [
-  { name: "Chat App", github: "https://github.com/Hummylol/oneonone", external: "https://humaidchat.vercel.app/", video: "chat-app-preview.mp4" },
-  { name: "MindCare", github: "https://github.com/Hummylol/mindcare", external: "https://mindcarejce.vercel.app/", video: "mental-health-preview.mp4" },
-  { name: "Devsistant", github: "https://github.com/Hummylol/devsistant", external: "https://devsistant.vercel.app/", video: "devsistant-preview.mp4" },
-  { name: "Code Share", github: "https://github.com/Hummylol/code-share", external: "https://analanbu.vercel.app", video: "code-share-preview.mp4" },
-  { name: "Fitbyte", github: "https://github.com/Hummylol/fitbyte", external: "https://fitbyte.vercel.app/", video: "fitbyte-preview.mp4" },
-  { name: "LLM", github: "https://github.com/Hummylol/llm", video: "llm-preview.mp4" },
+  { name: "Chat App", github: "https://github.com/Hummylol/oneonone", external: "https://humaidchat.vercel.app/", video: "/project-vids/chat-app-preview.mp4" },
+  { name: "MindCare", github: "https://github.com/Hummylol/mindcare", external: "https://mindcarejce.vercel.app/", video: "/project-vids/mental-health-preview.mp4" },
+  { name: "Devsistant", github: "https://github.com/Hummylol/devsistant", external: "https://devsistant.vercel.app/", video: "/project-vids/devsistant-preview.mp4" },
+  { name: "Fitbyte", github: "https://github.com/Hummylol/fitbyte", external: "https://fitbyte.vercel.app/", video: "/project-vids/fitbyte-preview.mp4" },
+  { name: "Code Share", github: "https://github.com/Hummylol/code-share", external: "https://analanbu.vercel.app", video: "/project-vids/code-share-preview.mp4" },
+  { name: "NetBridge", github: "https://github.com/Hummylol/llm", video: "/project-vids/llm-preview.mp4" },
   { name: "Portfolio", github: "https://github.com/Hummylol/portfolionext" },
 ];
-
-const CustomCursor = ({
-  hoveredProject,
-  hoverType, 
-  position,
-}: {
-  hoveredProject: string | null;
-  hoverType: "name" | "link" | null;
-  position: { x: number; y: number };
-}) => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  if (isMobile) return null; // Disable cursor on mobile
-
-  const showPreview = hoveredProject !== null;
-
-  return (
-    <AnimatePresence>
-      {showPreview && (
-        <motion.div
-          key={hoveredProject + (hoverType ?? "")}
-          initial={{
-            opacity: 0,
-            scale: 0.8,
-            borderRadius: "50%",
-            x: position.x,
-            y: position.y,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            borderRadius: "16px",
-            x: position.x,
-            y: position.y,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          exit={{ opacity: 0, scale: 0.8, borderRadius: "50%" }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            zIndex: 9999,
-            width: 600,
-            height: 350,
-            backgroundColor: "black",
-            boxShadow:
-              "0 15px 40px rgba(0,0,0,0.7), 0 0 15px rgba(255,255,255,0.15)",
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="w-[90vw] h-[40vh] sm:w-[600px] sm:h-[350px]"
-        >
-          {(hoverType === "name" && projects.find(p => p.name === hoveredProject)?.video) ? (
-            <video
-              src={projects.find(p => p.name === hoveredProject)?.video}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover rounded-lg"
-            />
-          ) : (
-            <span className="text-white text-lg font-semibold select-none px-6">
-              {hoveredProject} Preview
-            </span>
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
 
 const Projects = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
@@ -208,22 +123,35 @@ const Projects = () => {
             {projects.map((project) => (
               <div
                 key={project.name}
-                className="text-4xl md:text-8xl border-b border-foreground transition-all duration-300 flex justify-between items-center"
+                className={`text-4xl md:text-8xl border-b border-foreground flex justify-between items-center transition-all duration-500 ${
+                  hoveredProject
+                    ? hoveredProject === project.name
+                      ? "opacity-100 blur-none scale-[1.01]"
+                      : "opacity-15 blur-[2px]"
+                    : "opacity-100 blur-none"
+                }`}
               >
                 <div
                   onMouseEnter={(e) => handleMouseEnter(project.name, "name", e)}
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                   onClick={() => handleMobileTap(project.name)}
-                  className={`w-fit cursor-pointer transition duration-300 font-qin ${
-                    hoveredProject && hoveredProject !== project.name
-                      ? "opacity-15"
-                      : "blur-none opacity-100"
-                  }`}
+                  data-cursor-video={project.video || "no-video"}
+                  data-cursor-project={project.name}
+                  className="w-fit cursor-pointer font-qin"
                 >
                   {project.name}
                 </div>
                 <div className="flex items-center gap-2 md:gap-4">
+                  {project.video && (
+                    <button
+                      onClick={() => handleMobileTap(project.name)}
+                      className="md:hidden cursor-pointer p-1 hover:text-blue-500 transition-colors text-foreground focus:outline-none"
+                      aria-label={`Play preview for ${project.name}`}
+                    >
+                      <Play className="w-4 h-4" />
+                    </button>
+                  )}
                   {project.github && (
                     <a
                       href={project.github}
@@ -257,12 +185,6 @@ const Projects = () => {
             ))}
           </div>
         </section>
-
-        <CustomCursor
-          hoveredProject={hoveredProject}
-          hoverType={hoverType}
-          position={position}
-        />
       </div>
 
       {/* Mobile Modal */}

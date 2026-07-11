@@ -96,6 +96,17 @@ export default function Skills() {
     return () => clearTimeout(timeoutId);
   }, [activeSkillId]);
 
+  useEffect(() => {
+    if (activeSkillId) {
+      document.body.classList.add("skill-open");
+    } else {
+      document.body.classList.remove("skill-open");
+    }
+    return () => {
+      document.body.classList.remove("skill-open");
+    };
+  }, [activeSkillId]);
+
   // Click Separator coordinate state
   const [mouseDownPos, setMouseDownPos] = useState({ x: 0, y: 0 });
   const [drawerOffset, setDrawerOffset] = useState(0);
