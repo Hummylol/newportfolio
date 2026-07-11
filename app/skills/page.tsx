@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { createSwapy } from "swapy";
+import { playSound } from "@/utils/audio";
 
 interface SkillItem {
   id: string;
@@ -111,6 +112,10 @@ export default function Skills() {
 
       swapyRef.current.onSwapStart(() => {
         setIsDragging(true);
+      });
+
+      swapyRef.current.onSwap(() => {
+        playSound.skillsSwap();
       });
 
       swapyRef.current.onSwapEnd(() => {

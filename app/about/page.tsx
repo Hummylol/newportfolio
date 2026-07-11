@@ -94,6 +94,7 @@ const About = () => {
 
   return (
     <div
+      id="about-section"
       ref={containerRef}
       className="h-[125vh] w-full relative bg-transparent"
     >

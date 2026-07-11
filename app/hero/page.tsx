@@ -61,15 +61,15 @@ export default function Hero() {
   useMagnet(ctaZoneRef   as React.RefObject<HTMLElement>, ctaRef   as React.RefObject<HTMLElement>, 0.4);
 
   return (
-    <section className="relative h-screen w-full flex flex-col justify-end bg-background text-foreground overflow-hidden p-[clamp(24px,4vw,56px)]">
+    <section id="hero-section" className="relative h-screen w-full flex flex-col justify-end bg-background text-foreground overflow-hidden p-[clamp(24px,4vw,56px)]">
 
       {/* ── Rotating badge — top-right ─────────────────── */}
       {/* Zone is larger than badge for a generous magnetic field */}
       <div
         ref={badgeZoneRef}
-        className="absolute z-10 flex items-center justify-center"
+        className="absolute  z-10 flex items-center justify-center"
         style={{
-          top:    'clamp(22px, 3vw, 42px)',   /* ~6px lower than before */
+          top:    'clamp(26px, 4vw, 50px)',   /* ~6px lower than before */
           right:  'clamp(10px, 3vw, 40px)',
           width:  'clamp(180px, 17vw, 220px)',
           height: 'clamp(180px, 17vw, 220px)',
@@ -77,7 +77,6 @@ export default function Hero() {
       >
         <a
           ref={badgeRef}
-          href="#work"
           className="relative flex items-center justify-center no-underline text-foreground will-change-transform"
           style={{
             width:  'clamp(160px, 16vw, 200px)',
@@ -87,7 +86,7 @@ export default function Hero() {
           {/* Spinning text ring */}
           <svg
             viewBox="0 0 120 120"
-            className="badge-ring absolute inset-0 w-full h-full"
+            className="badge-ring absolute inset-0 w-full h-full "
             style={{ animation: 'spin 20s linear infinite' }}
             aria-hidden="true"
           >
@@ -120,7 +119,7 @@ export default function Hero() {
       </div>
 
       {/* ── Main content ───────────────────────────────── */}
-      <div className="flex flex-col" style={{ gap: 'clamp(18px, 2.5vw, 32px)' }}>
+      <div className="flex flex-col absolute bottom-0" style={{ gap: 'clamp(18px, 2.5vw, 32px)' }}>
 
         {/* Eyebrow */}
         <div
@@ -136,23 +135,23 @@ export default function Hero() {
             <LineTextGL
               ref={line1Ref}
               text="HUMAID"
-              className="text-foreground"
+              className=""
               style={{
                 fontFamily:   'var(--font-qin), "Arial Black", sans-serif',
-                fontSize:     'clamp(80px, 18vw, 230px)',
+                fontSize:     'clamp(60px, 12vw, 180px)',
                 lineHeight:   1,
                 letterSpacing: '-0.02em',
               }}
             />
           </div>
-          <div className=" w-fit">
+          <div className=" w-fit -mt-10">
             <LineTextGL
               ref={line2Ref}
               text="SADATH"
-              className="text-foreground"
+              className=""
               style={{
                 fontFamily:   'var(--font-qin), "Arial Black", sans-serif',
-                fontSize:     'clamp(80px, 18vw, 230px)',
+                fontSize:     'clamp(60px, 12vw, 180px)',
                 lineHeight:   1,
                 letterSpacing: '-0.02em',
               }}

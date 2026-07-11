@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, X, ExternalLink } from "lucide-react";
+import { playSound } from "@/utils/audio";
 
 const Github = ({ className }: { className?: string }) => (
   <svg
@@ -148,6 +149,11 @@ const Projects = () => {
     if (enterTimeoutRef.current) {
       clearTimeout(enterTimeoutRef.current);
     }
+    
+    if (type === "name") {
+      playSound.projectHover();
+    }
+
     enterTimeoutRef.current = setTimeout(() => {
       if (type === "link") {
         setHoveredProject(null);
