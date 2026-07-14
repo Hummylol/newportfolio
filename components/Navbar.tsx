@@ -44,10 +44,10 @@ const Linkedin = ({ className, size = 16 }: { className?: string; size?: number 
 );
 
 const cardVariants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.95, 
-    x: "5%", 
+  hidden: {
+    opacity: 0,
+    scale: 0.95,
+    x: "5%",
     y: "-5%",
     borderRadius: "24px",
     transition: {
@@ -58,11 +58,11 @@ const cardVariants = {
       staggerDirection: -1
     }
   },
-  visible: { 
-    opacity: 1, 
-    scale: 1, 
-    x: 0, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    scale: 1,
+    x: 0,
+    y: 0,
     borderRadius: "24px",
     transition: {
       type: "spring" as const,
@@ -76,9 +76,9 @@ const cardVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, x: -20, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    x: 0, 
+  visible: {
+    opacity: 1,
+    x: 0,
     scale: 1,
     transition: {
       type: "spring" as const,
@@ -90,13 +90,13 @@ const itemVariants = {
 
 const footerVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      delay: 0.35, 
-      duration: 0.3 
-    } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.35,
+      duration: 0.3
+    }
   }
 };
 
@@ -286,22 +286,19 @@ export default function Navbar() {
     <>
       {/* Wrapper container to align header and card relative to each other and handle shrink transitions */}
       <div
-        className={`fixed left-1/2 -translate-x-1/2 flex flex-col items-end transition-all duration-700 ease-out z-[1002] ${
-          isPill
-            ? "w-[90%] md:w-[55%] top-4"
-            : "w-full top-0"
-        }`}
+        className={`fixed left-1/2 -translate-x-1/2 flex flex-col items-end transition-all duration-700 ease-out z-[1002] ${isPill
+          ? "w-[90%] md:w-[55%] top-4"
+          : "w-full top-0"
+          }`}
       >
         <header
-          className={`w-full flex items-center justify-between transition-all duration-700 ease-out ${
-            menuOpen 
-              ? "bg-transparent border-transparent shadow-none" 
-              : "backdrop-blur-md"
-          } ${
-            isPill
+          className={`w-full flex items-center justify-between transition-all duration-700 ease-out ${menuOpen
+            ? "bg-transparent border-transparent shadow-none"
+            : "backdrop-blur-md"
+            } ${isPill
               ? `rounded-full px-8 py-4 ${menuOpen ? "" : "bg-[var(--navbar-bg)] border border-zinc-200 dark:border-zinc-800 shadow-[0_10px_30px_var(--shadow-color)]"}`
               : `rounded-none px-8 py-2 ${menuOpen ? "" : "bg-[var(--navbar-bg)] border-b border-[var(--navbar-border)]"}`
-          }`}
+            }`}
         >
           <div className="w-full flex justify-between items-center relative z-50">
             <Link
@@ -347,23 +344,20 @@ export default function Navbar() {
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className={`p-2 transition-all duration-300 focus:outline-none cursor-pointer relative z-50 flex items-center justify-center rounded-full hover:scale-105 active:scale-95 shadow-md ${
-                  menuOpen 
-                    ? (theme === "light" ? "w-10 h-10 bg-black text-white" : "w-10 h-10 bg-white text-black")
-                    : "w-10 h-10 bg-transparent text-foreground hover:bg-foreground/5 shadow-none"
-                }`}
+                className={`p-2 transition-all duration-300 focus:outline-none cursor-pointer relative z-50 flex items-center justify-center rounded-full hover:scale-105 active:scale-95 shadow-md ${menuOpen
+                  ? (theme === "light" ? "w-10 h-10 bg-black text-white" : "w-10 h-10 bg-white text-black")
+                  : "w-10 h-10 bg-transparent text-foreground hover:bg-foreground/5 shadow-none"
+                  }`}
                 aria-label="Toggle menu"
               >
                 <div className="w-6 h-6 relative flex items-center justify-center">
-                  <span 
-                    className={`absolute w-5 h-[1.5px] rounded-full transition-all duration-355 ease-out ${
-                      menuOpen ? "bg-current rotate-45 translate-y-0" : "bg-current -translate-y-[4px]"
-                    }`} 
+                  <span
+                    className={`absolute w-5 h-[1.5px] rounded-full transition-all duration-355 ease-out ${menuOpen ? "bg-current rotate-45 translate-y-0" : "bg-current -translate-y-[4px]"
+                      }`}
                   />
-                  <span 
-                    className={`absolute w-5 h-[1.5px] rounded-full transition-all duration-355 ease-out ${
-                      menuOpen ? "bg-current -rotate-45 translate-y-0" : "bg-current translate-y-[4px]"
-                    }`} 
+                  <span
+                    className={`absolute w-5 h-[1.5px] rounded-full transition-all duration-355 ease-out ${menuOpen ? "bg-current -rotate-45 translate-y-0" : "bg-current translate-y-[4px]"
+                      }`}
                   />
                 </div>
               </button>
@@ -387,7 +381,7 @@ export default function Navbar() {
               <div className="flex-1 flex flex-col justify-center">
                 <nav className="relative flex flex-col gap-2 py-2">
                   {menuItems.map((item, idx) => {
-                    const isActive = 
+                    const isActive =
                       (item.label === "home" && activeSection === "hero") ||
                       (item.label === "project" && activeSection === "projects") ||
                       (item.label === "skills" && activeSection === "skills") ||
@@ -409,21 +403,19 @@ export default function Navbar() {
                           onClick={(e) => handleLinkClick(e, item.href, item.sectionId)}
                           className="group flex items-center gap-3 py-2 w-full text-left"
                         >
-                          <span 
-                            className={`text-2xl transition-all duration-300 ${
-                              hoveredIndex === idx 
-                                ? "opacity-100 translate-x-0 w-4" 
-                                : "opacity-0 -translate-x-2 w-0 overflow-hidden"
-                            }`}
+                          <span
+                            className={`text-2xl transition-all duration-300 ${hoveredIndex === idx
+                              ? "opacity-100 translate-x-0 w-4"
+                              : "opacity-0 -translate-x-2 w-0 overflow-hidden"
+                              }`}
                           >
                             •
                           </span>
-                          <span 
-                            className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight font-display lowercase transition-all duration-300 ${
-                              isActive 
-                                ? "opacity-100" 
-                                : "opacity-40 group-hover:opacity-100 group-hover:translate-x-1"
-                            }`}
+                          <span
+                            className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight font-display lowercase transition-all duration-300 ${isActive
+                              ? "opacity-100"
+                              : "opacity-40 group-hover:opacity-100 group-hover:translate-x-1"
+                              }`}
                           >
                             {item.label}
                           </span>
@@ -434,30 +426,30 @@ export default function Navbar() {
                 </nav>
               </div>
 
-              <motion.div 
+              <motion.div
                 variants={footerVariants}
                 className="flex justify-between items-end gap-4"
               >
-                <a 
-                  href="mailto:humaidsadath2004@gmail.com" 
+                <a
+                  href="mailto:humaidsadath2004@gmail.com"
                   className="text-xs font-mono font-medium tracking-tight opacity-70 hover:opacity-100 transition-opacity border-b border-background/20 pb-0.5"
                 >
                   humaidsadath2004@gmail.com
                 </a>
 
                 <div className="flex gap-3">
-                  <a 
-                    href="https://github.com/Hummylol" 
-                    target="_blank" 
+                  <a
+                    href="https://github.com/Hummylol"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full border border-background/20 hover:border-background text-background hover:bg-background hover:text-foreground flex items-center justify-center hover:scale-105 transition-all duration-300"
                     aria-label="GitHub"
                   >
                     <Github size={16} />
                   </a>
-                  <a 
-                    href="https://www.linkedin.com/in/humayd-sadath-8b2b2b2b2/" 
-                    target="_blank" 
+                  <a
+                    href="https://www.linkedin.com/in/humayd-sadath-8b2b2b2b2/"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full border border-background/20 hover:border-background text-background hover:bg-background hover:text-foreground flex items-center justify-center hover:scale-105 transition-all duration-300"
                     aria-label="LinkedIn"
@@ -474,7 +466,7 @@ export default function Navbar() {
       {/* Backdrop to close menu when clicking outside - uses motion.div for animated fade out */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

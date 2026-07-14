@@ -30,55 +30,53 @@ const About = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const mainTl = gsap.timeline({
+      // Shutter splitting animation - bound to scroll (scrub)
+      const shutterTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top-=20% top",
-          end: "bottom-=35% top+=50%",
+          start: "top top",
+          end: "bottom bottom",
           scrub: 1,
           invalidateOnRefresh: true,
         },
       })
 
-      // Initial states
-      gsap.set(contentRef.current, { opacity: 0 })
-      gsap.set(headingRef.current, { y: 60, opacity: 0 })
-      gsap.set(bioRef.current, { y: 40, opacity: 0 })
-      gsap.set(cardsRef.current, { y: 50, opacity: 0, scale: 0.95 })
-      gsap.set(statsRef.current, { y: 30, opacity: 0 })
-
-      // Shutter animation — vertical split
-      mainTl
+      shutterTl
         .to(topRef.current, { yPercent: -101, ease: "none" })
         .to(bottomRef.current, { yPercent: 101, ease: "none" }, "<")
-
-      // Shutter animation — horizontal drawers
-      mainTl
         .to(leftDrawerRef.current, { xPercent: -101, ease: "power2.out" }, "0.2")
         .to(rightDrawerRef.current, { xPercent: 101, ease: "power2.out" }, "<")
 
-      // Content fade in
-      mainTl.to(contentRef.current, { opacity: 1, duration: 0.3 }, "0.5")
+      // Content reveal animation - triggered on entry once
+      const contentTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top+=15% top",
+          toggleActions: "play reverse play reverse",
+        },
+      })
 
-      // Heading reveal
-      mainTl.to(headingRef.current, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "0.6")
+      // Initial states
+      gsap.set(contentRef.current, { opacity: 0 })
+      gsap.set(headingRef.current, { y: 40, opacity: 0 })
+      gsap.set(bioRef.current, { y: 30, opacity: 0 })
+      gsap.set(cardsRef.current, { y: 30, opacity: 0, scale: 0.98 })
+      gsap.set(statsRef.current, { y: 20, opacity: 0 })
 
-      // Bio text reveal
-      mainTl.to(bioRef.current, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, "0.75")
-
-      // Cards staggered reveal
-      mainTl.to(
-        cardsRef.current,
-        { y: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" },
-        "0.85"
-      )
-
-      // Stats reveal
-      mainTl.to(
-        statsRef.current,
-        { y: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: "back.out(1.4)" },
-        "1.1"
-      )
+      contentTl
+        .to(contentRef.current, { opacity: 1, duration: 0.5 })
+        .to(headingRef.current, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "0.05")
+        .to(bioRef.current, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, "0.1")
+        .to(
+          cardsRef.current,
+          { y: 0, opacity: 1, scale: 1, duration: 0.25, stagger: 0.08, ease: "power3.out" },
+          "0.3"
+        )
+        .to(
+          statsRef.current,
+          { y: 0, opacity: 1, duration: 0.25, stagger: 0.06, ease: "power2.out" },
+          "0.5"
+        )
     }, containerRef)
 
     return () => ctx.revert()
@@ -96,7 +94,7 @@ const About = () => {
     <div
       id="about-section"
       ref={containerRef}
-      className="h-[125vh] w-full relative bg-transparent"
+      className="h-[130vh] w-full relative bg-transparent"
     >
       <div
         ref={stickyRef}

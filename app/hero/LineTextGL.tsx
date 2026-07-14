@@ -48,11 +48,6 @@ const LineTextGL = forwardRef<HTMLDivElement, LineTextGLProps>(
         const fontSize = styleEl.fontSize;
         const letterSpacing = styleEl.letterSpacing;
         const color = styleEl.color;
-        const parentColor = container ? window.getComputedStyle(container).color : 'no container';
-        const sectionColor = document.getElementById('hero-section') ? window.getComputedStyle(document.getElementById('hero-section')!).color : 'no section';
-
-        console.log(`[LineTextGL Debug] text: "${text}", isDark: ${isDark}, styleEl: "${color}", parent: "${parentColor}", section: "${sectionColor}", classList: "${document.documentElement.className}"`);
-
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = color || (isDark ? '#ffffff' : '#000000');

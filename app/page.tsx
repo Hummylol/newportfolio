@@ -5,6 +5,7 @@ import Hero from "@/app/hero/page";
 import Skills from "@/app/skills/page";
 import Projects from "@/app/projects/page";
 import About from "@/app/about/page";
+import Footer from "@/app/footer/page";
 
 export default function Home() {
   const [activeDesign, setActiveDesign] = useState(1);
@@ -30,6 +31,8 @@ export default function Home() {
         <Skills />
         <About />
       </div>
+        <Footer />
+
     </>
   );
 }

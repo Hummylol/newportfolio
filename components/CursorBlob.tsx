@@ -80,11 +80,12 @@ export default function CursorBlob() {
       { id: "projects-section", name: "projects" },
       { id: "skills", name: "skills" },
       { id: "about-section", name: "about" },
+      { id: "footer-section", name: "footer" },
     ];
 
     const updateActiveSection = () => {
       const viewportMid = window.innerHeight / 2;
-      let active = "hero";
+      let active = document.getElementById("hero-section") ? "hero" : "footer";
       for (const section of sectionMap) {
         const el = document.getElementById(section.id);
         if (!el) continue;
@@ -142,10 +143,10 @@ export default function CursorBlob() {
         const isClickable = 
           target.tagName === "A" ||
           target.tagName === "BUTTON" ||
-          target.closest("a") ||
-          target.closest("button") ||
+          !!target.closest("a") ||
+          !!target.closest("button") ||
           target.getAttribute("role") === "button" ||
-          window.getComputedStyle(target).cursor === "pointer";
+          target.style.cursor === "pointer";
           
         setIsHovered(!!isClickable);
       }
@@ -227,6 +228,10 @@ export default function CursorBlob() {
       width = 140;
       height = 140;
       radius = 70; // 140px circle
+    } else if (activeSection === "footer") {
+      width = 12;
+      height = 12;
+      radius = 6;
     } else {
       // Default dot, grows slightly on hovers
       const size = isHovered ? 28 : 16;
@@ -234,6 +239,8 @@ export default function CursorBlob() {
       height = size;
       radius = size / 2;
     }
+
+
 
     sizeWidthValue.set(width);
     sizeHeightValue.set(height);
