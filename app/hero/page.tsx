@@ -1,7 +1,7 @@
 'use client';
 
 import './hero.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import LineTextGL from './LineTextGL';
 
@@ -37,6 +37,15 @@ function useMagnet(
 
 /* ── Component ─────────────────────────────────────────── */
 export default function Hero() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const line1Ref    = useRef<HTMLDivElement>(null);
   const line2Ref    = useRef<HTMLDivElement>(null);
   const eyebrowRef  = useRef<HTMLDivElement>(null);
@@ -69,18 +78,18 @@ export default function Hero() {
         ref={badgeZoneRef}
         className="absolute  z-10 flex items-center justify-center"
         style={{
-          top:    'clamp(26px, 4vw, 50px)',   /* ~6px lower than before */
-          right:  'clamp(10px, 3vw, 40px)',
-          width:  'clamp(180px, 17vw, 220px)',
-          height: 'clamp(180px, 17vw, 220px)',
+          top:    isMobile ? '80px' : 'clamp(20px, 3vw, 50px)',   /* ~6px lower than before */
+          right:  'clamp(8px, 2vw, 40px)',
+          width:  'clamp(100px, 12vw, 220px)',
+          height: 'clamp(100px, 12vw, 220px)',
         }}
       >
         <a
           ref={badgeRef}
           className="relative flex items-center justify-center no-underline text-foreground will-change-transform"
           style={{
-            width:  'clamp(160px, 16vw, 200px)',
-            height: 'clamp(160px, 16vw, 200px)',
+            width:  'clamp(85px, 10vw, 200px)',
+            height: 'clamp(85px, 10vw, 200px)',
           }}
         >
           {/* Spinning text ring */}
@@ -111,7 +120,7 @@ export default function Hero() {
             fill="currentColor"
             aria-hidden="true"
             className="relative z-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:rotate-45 hover:scale-110"
-            style={{ width: 'clamp(32px, 3.5vw, 44px)', height: 'clamp(32px, 3.5vw, 44px)' }}
+            style={{ width: 'clamp(20px, 2.5vw, 44px)', height: 'clamp(20px, 2.5vw, 44px)' }}
           >
             <path d="M50 0 C50 0 44 44 0 50 C0 50 44 56 50 100 C50 100 56 56 100 50 C100 50 56 44 50 0Z" />
           </svg>
@@ -119,7 +128,7 @@ export default function Hero() {
       </div>
 
       {/* ── Main content ───────────────────────────────── */}
-      <div className="flex flex-col absolute bottom-0" style={{ gap: 'clamp(18px, 2.5vw, 32px)' }}>
+      <div className={isMobile ? "flex flex-col relative z-10 w-full mb-[12vh]" : "flex flex-col absolute bottom-0"} style={{ gap: 'clamp(18px, 2.5vw, 32px)' }}>
 
         {/* Eyebrow */}
         <div
@@ -130,7 +139,7 @@ export default function Hero() {
           Full-Stack Developer · Chennai, IN
         </div>
 
-        <div className="w-screen">
+        <div className={isMobile ? "w-full" : "w-screen"}>
           <div className="w-fit" data-hero-name>
             <LineTextGL
               ref={line1Ref}
@@ -144,7 +153,11 @@ export default function Hero() {
               }}
             />
           </div>
-          <div className=" w-fit -mt-10" data-hero-name>
+          <div
+            className={isMobile ? "w-fit" : "w-fit -mt-10"}
+            style={isMobile ? { marginTop: 'calc(-0.23 * clamp(60px, 12vw, 180px))' } : undefined}
+            data-hero-name
+          >
             <LineTextGL
               ref={line2Ref}
               text="SADATH"

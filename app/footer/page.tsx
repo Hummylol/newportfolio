@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const CHAR_RAMP = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 const CELL_SIZE = 6; // Smaller cells for sharper hands
 const HOVER_RADIUS = 60;
-const BACKGROUND_CHAR = " "; 
+const BACKGROUND_CHAR = " ";
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
@@ -27,9 +27,21 @@ export default function Footer() {
   const footerVisible = useRef(false); // IntersectionObserver gate
 
   const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isFooterActive, setIsFooterActive] = useState(false); // drives z-index
   const themeRef = useRef("dark");
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
     const checkTheme = () => {
       const isDark = document.documentElement.classList.contains("dark");
       setIsDarkTheme(isDark);
@@ -46,9 +58,10 @@ export default function Footer() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
+    if (isMobile) return;
     // Helper to sample image and create ASCII cells [4, 8]
     const setupHand = (canvas: HTMLCanvasElement, img: HTMLImageElement) => {
       if (!canvas || !img) return;
@@ -66,9 +79,9 @@ export default function Footer() {
         offscreen.width = cols;
         offscreen.height = rows;
         const offCtx = offscreen.getContext("2d", { willReadFrequently: true });
-        
+
         if (!offCtx) return;
-        
+
         offCtx.drawImage(img, 0, 0, cols, rows);
         const pixelData = offCtx.getImageData(0, 0, cols, rows).data;
 
@@ -184,9 +197,8 @@ export default function Footer() {
     };
 
     const ctx = gsap.context(() => {
-      // 1. Initial State [7, 10]
+      // 1. Initial State
       gsap.set(".char", { y: "105%" });
-      gsap.set(".line-inner", { y: "105%" });
 
       // 2. Main ScrollTrigger Timeline [11, 12]
       const tl = gsap.timeline({
@@ -195,7 +207,7 @@ export default function Footer() {
           start: "top center",
           end: "bottom center",
           toggleActions: "play reverse play reverse",
-          markers: true,
+          markers: false,
         },
       });
 
@@ -203,15 +215,9 @@ export default function Footer() {
         .to(".char", {
           y: "0%",
           duration: 1.2,
-          stagger: { each: 0.05, from: "center" }, // Bloom effect from source [13]
+          stagger: { each: 0.05, from: "center" },
           ease: "power4.out",
-        }, 0.2)
-        .to(".line-inner", { 
-          y: "0%", 
-          stagger: 0.1, 
-          duration: 1, 
-          ease: "power3.out" 
-        }, 0.4);
+        }, 0.2);
 
       // 3. Parallax Drift Render Loop [7, 13]
       // Only runs when footer is visible — gated by IntersectionObserver ref
@@ -220,7 +226,7 @@ export default function Footer() {
 
         const normalizedX = (pointer.current.x / window.innerWidth - 0.5) * 100;
         drift.current.x += (normalizedX - drift.current.x) * 0.05;
-        
+
         // Hands drift in opposite directions for 3D feel [13]
         const leftX = -reveal.current.offset - (drift.current.x * 0.1);
         const rightX = reveal.current.offset + (drift.current.x * 0.1);
@@ -242,11 +248,13 @@ export default function Footer() {
 
     // IntersectionObserver: watch the scrolling revealer div (NOT the fixed footer)
     // The fixed footer is always in viewport; the revealer scrolls with the page
+    // Also drives isFooterActive state for dynamic z-index (links need z:1 to be clickable)
     let observer: IntersectionObserver | null = null;
     if (revealerRef.current) {
       observer = new IntersectionObserver(
         ([entry]) => {
           footerVisible.current = entry.isIntersecting;
+          setIsFooterActive(entry.isIntersecting);
         },
         { threshold: 0.01 }
       );
@@ -265,20 +273,23 @@ export default function Footer() {
       cleanups.forEach((cb) => cb());
       if (observer) observer.disconnect();
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <>
-      {/* Scroll Trigger Marker [1] */}
-      <div ref={revealerRef} className="h-screen w-full bg-transparent" />
+
+      {/* Scroll Trigger Marker — pointer-events-none so it never blocks clicks */}
+      <div id="footer-revealer" ref={revealerRef} className="h-screen w-full bg-transparent pointer-events-none" />
 
       <footer
         id="footer-section"
         ref={footerRef}
         className={`fixed top-0 left-0 w-full h-screen flex flex-col justify-between p-10 overflow-hidden transition-colors duration-500 ${isDarkTheme ? "bg-black text-white" : "bg-white text-black"}`}
-        style={{ zIndex: -1 }} // Pushed to back [2]
+        style={{ zIndex: isFooterActive ? 1 : -1 }} // Dynamic: 1 when visible (links clickable), -1 otherwise
       >
-       
+
         <div className="absolute inset-0 flex justify-between items-center pointer-events-none px-4">
           <div className="hand-left w-[820px] h-[700px] flex items-center justify-center">
             <img ref={leftImgRef} src="/hand-left.png" className="hidden" alt="source" />
@@ -290,19 +301,38 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Content Reveal [1] */}
-        <div className="relative z-10 flex justify-between uppercase text-xs tracking-widest opacity-80">
-          <div className="flex flex-col gap-3">
-            {["Instagram", "X (Twitter)", "LinkedIn", "GitHub"].map((item) => (
-              <div key={item} className="overflow-hidden">
-                <span className="line-inner block">{item}</span>
-              </div>
-            ))}
+        {/* Top Bar: left = contact info, right = links [1] */}
+        <div className="relative z-10 flex justify-between items-start">
+
+          {/* Left: email + copyright */}
+          <div className="flex flex-col gap-1">
+            <a
+              href="mailto:humaidsadath2004@gmail.com"
+              className="footer-link uppercase text-xs tracking-widest opacity-80"
+            >
+              humaidsadath2004@gmail.com
+            </a>
+            <span className="uppercase text-xs tracking-widest opacity-50">&copy; 2026</span>
           </div>
-          <div className="w-72 overflow-hidden">
-            <p className="line-inner leading-relaxed">
-              Crafting digital experiences where motion meets the raw density of ASCII characters.
-            </p>
+
+          {/* Right: social links */}
+          <div className="flex flex-col gap-2 items-end">
+            {[
+              { label: "GitHub",   href: "https://github.com/Hummylol" },
+              { label: "LinkedIn", href: "https://www.linkedin.com/in/humaid-sadath-b0850841a" },
+              { label: "Instagram",href: "https://www.instagram.com/humaidsadath" },
+              { label: "LeetCode", href: "https://leetcode.com/u/Humaidlol/" },
+            ].map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link uppercase text-xs tracking-widest opacity-80"
+              >
+                {label}
+              </a>
+            ))}
           </div>
         </div>
 

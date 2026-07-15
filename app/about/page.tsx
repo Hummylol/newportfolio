@@ -121,6 +121,17 @@ const About = () => {
               ABOUT
             </div>
           </div>
+          {/* Editorial Shutter-split Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-50 select-none">
+            <span className="text-[10px] font-body tracking-[0.3em] text-foreground/45 uppercase">
+              scroll to split
+            </span>
+            <div className="text-[9px] font-mono text-foreground/35 flex items-center gap-1">
+              <span>[</span>
+              <span className="inline-block animate-arrow-slide">↓</span>
+              <span>]</span>
+            </div>
+          </div>
         </div>
 
         {/* ── Horizontal drawers ── */}
@@ -129,10 +140,10 @@ const About = () => {
           <div ref={rightDrawerRef} className="absolute inset-y-0 right-0 w-1/2 bg-foreground z-30" />
 
           {/* ── Main content ── */}
-          <div ref={contentRef} className="relative w-full h-[150vh] flex items-center justify-center opacity-0 p-6 md:p-12 lg:p-16">
+          <div ref={contentRef} className="relative w-full h-full flex flex-col justify-start md:justify-center pt-24 md:pt-28 pb-8 md:pb-12 opacity-0 p-6 md:p-12 lg:p-16 overflow-y-auto md:overflow-hidden">
             <div className="w-full max-w-6xl mx-auto">
               {/* Top section: Heading + Bio */}
-              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16 mb-8 md:mb-12">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-16 mb-8 md:mb-12">
                 {/* Left: Heading */}
                 <div ref={headingRef} className="lg:max-w-md">
                   <div className="text-xs md:text-sm font-body tracking-[0.3em] text-foreground/55 uppercase mb-3 font-bold">

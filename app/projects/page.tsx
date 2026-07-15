@@ -28,7 +28,7 @@ const projects = [
   { name: "MindCare", github: "https://github.com/Hummylol/mindcare", external: "https://mindcarejce.vercel.app/", video: "/project-vids/mental-health-preview.mp4" },
   { name: "Devsistant", github: "https://github.com/Hummylol/devsistant", external: "https://devsistant.vercel.app/", video: "/project-vids/devsistant-preview.mp4" },
   { name: "Fitbyte", github: "https://github.com/Hummylol/fitbyte", external: "https://fitbyte.vercel.app/", video: "/project-vids/fitbyte-preview.mp4" },
-  { name: "Code Share", github: "https://github.com/Hummylol/code-share", external: "https://analanbu.vercel.app", video: "/project-vids/code-share-preview.mp4" },
+  { name: "C-Share", github: "https://github.com/Hummylol/code-share", external: "https://analanbu.vercel.app", video: "/project-vids/code-share-preview.mp4" },
   { name: "NetBridge", github: "https://github.com/Hummylol/llm", video: "/project-vids/llm-preview.mp4" },
   { name: "Portfolio", github: "https://github.com/Hummylol/portfolionext" },
 ];
@@ -116,14 +116,14 @@ const Projects = () => {
     <>
       <div
         id="projects-section"
-        className="h-screen w-full flex flex-col justify-center items-center bg-background text-foreground pt-20 overflow-hidden"
+        className="h-screen w-full flex flex-col justify-center items-center bg-background text-foreground pt-[10vh] pb-[4vh] 2xl:pt-20 2xl:pb-0 overflow-hidden"
       >
-        <section className="h-fit w-[90%] flex flex-col relative">
-          <div className="flex flex-col gap-4 relative">
+        <section className="h-fit w-[90%] md:max-w-6xl 2xl:max-w-none flex flex-col relative">
+          <div className="flex flex-col gap-[1.5vh] md:gap-[2vh] 2xl:gap-4 relative">
             {projects.map((project) => (
               <div
                 key={project.name}
-                className={`text-4xl md:text-8xl border-b border-foreground flex justify-between items-center transition-all duration-500 ${
+                className={`text-[clamp(1.6rem,5vh,2.5rem)] md:text-[clamp(2rem,6.5vh,5.5rem)] 2xl:text-8xl border-b border-foreground flex justify-between items-center pb-[0.8vh] md:pb-[1.2vh] 2xl:pb-0 transition-all duration-500 ${
                   hoveredProject
                     ? hoveredProject === project.name
                       ? "opacity-100 blur-none scale-[1.01]"
@@ -142,14 +142,14 @@ const Projects = () => {
                 >
                   {project.name}
                 </div>
-                <div className="flex items-center gap-2 md:gap-4">
+                <div className="flex items-center gap-[1.5vh] md:gap-[2.5vh] 2xl:gap-4">
                   {project.video && (
                     <button
                       onClick={() => handleMobileTap(project.name)}
                       className="md:hidden cursor-pointer p-1 hover:text-blue-500 transition-colors text-foreground focus:outline-none"
                       aria-label={`Play preview for ${project.name}`}
                     >
-                      <Play className="w-4 h-4" />
+                      <Play className="w-[3vh] h-[3vh] max-w-[20px] max-h-[20px] min-w-[16px] min-h-[16px] 2xl:w-4 2xl:h-4" />
                     </button>
                   )}
                   {project.github && (
@@ -163,7 +163,7 @@ const Projects = () => {
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <Github className="w-4 h-4 md:w-6 md:h-6" />
+                      <Github className="w-[3vh] h-[3vh] max-w-[24px] max-h-[24px] min-w-[16px] min-h-[16px] md:w-[3.8vh] md:h-[3.8vh] 2xl:w-6 2xl:h-6" />
                     </a>
                   )}
                   {project.external && (
@@ -177,7 +177,7 @@ const Projects = () => {
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <ExternalLink className="w-4 h-4 md:w-6 md:h-6" />
+                      <ExternalLink className="w-[3vh] h-[3vh] max-w-[24px] max-h-[24px] min-w-[16px] min-h-[16px] md:w-[3.8vh] md:h-[3.8vh] 2xl:w-6 2xl:h-6" />
                     </a>
                   )}
                 </div>

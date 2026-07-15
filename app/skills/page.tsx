@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { createSwapy } from "swapy";
 import { playSound } from "@/utils/audio";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillItem {
   id: string;
@@ -73,6 +74,15 @@ const skillsData: Record<string, SkillItem> = {
 };
 
 export default function Skills() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const swapyRef = useRef<any>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -115,6 +125,7 @@ export default function Skills() {
 
   useEffect(() => {
     setMounted(true);
+    if (isMobile) return;
     if (containerRef.current) {
       swapyRef.current = createSwapy(containerRef.current, {
         animation: "dynamic",
@@ -139,7 +150,7 @@ export default function Skills() {
         swapyRef.current.destroy();
       }
     };
-  }, []);
+  }, [isMobile]);
 
   // Click Separator tracking logic
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -335,8 +346,81 @@ export default function Skills() {
     }
   };
 
+  if (isMobile) {
+    return (
+      <section id="skills" className="min-h-screen h-auto w-full bg-background relative select-none py-24 px-6 flex flex-col justify-start">
+        <div className="w-full max-w-xl mx-auto z-10">
+          {/* Section Header */}
+          <div className="flex flex-col mb-8 pb-4 border-b border-border">
+            <span className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest font-body mb-2 block">
+              [ CAPABILITIES ]
+            </span>
+            <h2 className="text-3xl font-extrabold tracking-tighter uppercase font-display text-foreground">
+              TECHNICAL STACK
+            </h2>
+          </div>
+
+          {/* Accordion list */}
+          <div className="flex flex-col gap-4">
+            {Object.values(skillsData).map((skill) => {
+              const isOpen = activeSkillId === skill.id;
+              return (
+                <div
+                  key={skill.id}
+                  className="border border-border bg-card rounded-2xl overflow-hidden transition-all duration-300 shadow-sm"
+                >
+                  <button
+                    onClick={() => {
+                      playSound.skillsSwap();
+                      setActiveSkillId(isOpen ? null : skill.id);
+                    }}
+                    className="w-full text-left p-5 flex justify-between items-center focus:outline-none"
+                  >
+                    <div>
+                      <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase block mb-1">
+                        {skill.category}
+                      </span>
+                      <h3 className="text-base font-bold uppercase tracking-tight text-foreground">
+                        {skill.title}
+                      </h3>
+                    </div>
+                    <div className="w-8 h-8 rounded-full border border-border bg-background flex items-center justify-center transition-transform duration-300">
+                      <span className="text-xl font-light text-foreground select-none leading-none">
+                        {isOpen ? "−" : "+"}
+                      </span>
+                    </div>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="px-5 pb-5 pt-1 border-t border-border/40 flex flex-col gap-4">
+                          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-body">
+                            {skill.desc}
+                          </p>
+                          <div className="w-full">
+                            {renderDrawerVisual(skill.visualType)}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="skills" className="h-screen w-full flex items-center justify-center bg-background relative overflow-hidden transition-colors duration-500 select-none py-12 px-6">
+    <section id="skills" className="min-h-screen h-auto md:h-screen w-full flex items-center justify-center bg-background relative overflow-y-visible md:overflow-hidden transition-colors duration-500 select-none py-24 md:py-12 px-6">
       {/* Ambient background glow */}
 
       <div className="max-w-6xl mx-auto w-full relative z-10">

@@ -145,6 +145,8 @@ export default function Navbar() {
         return "skills";
       case "about":
         return "about";
+      case "footer":
+        return "Thanks for visitin!!";
       default:
         return "hey, welcome to my portfolio!!";
     }
@@ -173,6 +175,7 @@ export default function Navbar() {
       { id: "projects-section", name: "projects" },
       { id: "skills", name: "skills" },
       { id: "about-section", name: "about" },
+      { id: "footer-revealer", name: "footer" },
     ];
 
     const updateActiveSection = () => {
@@ -267,14 +270,7 @@ export default function Navbar() {
       e.preventDefault();
       const target = document.getElementById(sectionId);
       if (target) {
-        if (sectionId === "about-section" && href === "/about") {
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: "smooth"
-          });
-        } else {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
+        target.scrollIntoView({ behavior: "smooth" });
       }
       setMenuOpen(false);
     } else {

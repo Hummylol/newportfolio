@@ -229,9 +229,9 @@ export default function CursorBlob() {
       height = 140;
       radius = 70; // 140px circle
     } else if (activeSection === "footer") {
-      width = 12;
-      height = 12;
-      radius = 6;
+      width = 0;
+      height = 0;
+      radius = 0;
     } else {
       // Default dot, grows slightly on hovers
       const size = isHovered ? 28 : 16;
