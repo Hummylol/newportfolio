@@ -163,7 +163,7 @@ body.mainframe-active {
   height: 1px;
   background: currentColor;
   transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              left   0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .footer-link:hover::after {
@@ -177,9 +177,11 @@ body.mainframe-active {
     transform: translateY(-4px);
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(4px);
     opacity: 0;

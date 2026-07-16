@@ -111,6 +111,29 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("hero");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const [showNavbar, setShowNavbar] = useState(false);
+  const [shouldTransition, setShouldTransition] = useState(false);
+
+  useEffect(() => {
+    const alreadyPlayed = sessionStorage.getItem("introPlayed");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (alreadyPlayed || prefersReducedMotion) {
+      setShowNavbar(true);
+      if (!prefersReducedMotion) {
+        const timer = setTimeout(() => {
+          setShouldTransition(true);
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    } else {
+      setShouldTransition(true);
+      const timer = setTimeout(() => {
+        setShowNavbar(true);
+      }, 2800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   const isInitialMount = useRef(true);
   useEffect(() => {
     if (isInitialMount.current) {
@@ -282,9 +305,13 @@ export default function Navbar() {
     <>
       {/* Wrapper container to align header and card relative to each other and handle shrink transitions */}
       <div
-        className={`fixed left-1/2 -translate-x-1/2 flex flex-col items-end transition-all duration-700 ease-out z-[1002] ${isPill
+        data-navbar
+        className={`fixed left-1/2 -translate-x-1/2 flex flex-col items-end z-[1002] ${isPill
           ? "w-[90%] md:w-[55%] top-4"
           : "w-full top-0"
+          } ${shouldTransition ? "transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]" : "transition-none"} ${showNavbar
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-6 pointer-events-none"
           }`}
       >
         <header

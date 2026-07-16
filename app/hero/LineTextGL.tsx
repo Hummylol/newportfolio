@@ -36,9 +36,8 @@ const LineTextGL = forwardRef<HTMLDivElement, LineTextGLProps>(
 
       const drawText = (isDark: boolean) => {
         if (!ctx || !textCanvas || !textEl || !container) return;
-        const rect = container.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
 
         ctx.clearRect(0, 0, width, height);
 
@@ -65,9 +64,8 @@ const LineTextGL = forwardRef<HTMLDivElement, LineTextGLProps>(
       };
 
       const init = () => {
-        const rect = container.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
         if (width === 0 || height === 0) return;
 
         textCanvas = document.createElement('canvas');
@@ -145,9 +143,8 @@ const LineTextGL = forwardRef<HTMLDivElement, LineTextGLProps>(
 
       const handleResize = () => {
         if (!container || !renderer || !camera || !plane || !textCanvas) return;
-        const rect = container.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
         if (width === 0 || height === 0) return;
 
         const dpr = window.devicePixelRatio || 1;
